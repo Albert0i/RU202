@@ -1,0 +1,53 @@
+DEL demostream
+
+XADD demostream 1735689600000-0 dt "2025-01-01 00:00:00"
+XADD demostream 1735690200000-0 dt "2025-01-01 00:10:00"
+XADD demostream 1735690800000-0 dt "2025-01-01 00:20:00"
+XADD demostream 1735691400000-0 dt "2025-01-01 00:30:00"
+XADD demostream 1735692000000-0 dt "2025-01-01 00:40:00"
+XADD demostream 1735692600000-0 dt "2025-01-01 00:50:00"
+XADD demostream 1735693200000-0 dt "2025-01-01 01:00:00"
+XADD demostream 1735693800000-0 dt "2025-01-01 01:10:00"
+XADD demostream 1735694400000-0 dt "2025-01-01 01:20:00"
+XADD demostream 1735695000000-0 dt "2025-01-01 01:30:00"
+XADD demostream 1735695600000-0 dt "2025-01-01 01:40:00"
+XADD demostream 1735696200000-0 dt "2025-01-01 01:50:00"
+XADD demostream 1735696800000-0 dt "2025-01-01 02:00:00"
+XADD demostream 1735697400000-0 dt "2025-01-01 02:10:00"
+XADD demostream 1735698000000-0 dt "2025-01-01 02:20:00"
+XADD demostream 1735698600000-0 dt "2025-01-01 02:30:00"
+XADD demostream 1735699200000-0 dt "2025-01-01 02:40:00"
+XADD demostream 1735699800000-0 dt "2025-01-01 02:50:00"
+
+XLEN demostream
+
+Time Based Trimming with XADD
+
+XADD demostream MINID 1735693200000 1735700400000-0 dt "2025-01-01 03:00:00"
+
+xlen demostream
+
+XRANGE demostream - + COUNT 1
+
+XREVRANGE demostream + - COUNT 1
+
+Time Based Trimming with XTRIM
+
+XTRIM demostream MINID 1735696800000
+
+XLEN demostream
+
+XRANGE demostream - +
+
+Further Enhancements in Redis 6.2: The LIMIT Clause for Approximate Trimming
+
+DEL demostream
+
+10000 XADD demostream * hello world
+
+XLEN demostream
+
+XTRIM demostream MAXLEN ~ 5000 LIMIT 1000
+
+XLEN demostream
+

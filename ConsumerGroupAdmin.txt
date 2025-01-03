@@ -1,0 +1,149 @@
+Week 3
+Basic consumer group administrator
+
+XADD numbers * n 0
+XADD numbers * n 1
+XADD numbers * n 2
+XADD numbers * n 3
+
+XGROUP CREATE numbers primes $
+XGROUP CREATE numbers sums 0 
+XGROUP CREATE numbers averages 0 
+
+XREADGROUP GROUP averages A COUNT 2 STREAMS numbers > 
+
+XREADGROUP GROUP averages B COUNT 1 STREAMS numbers >
+XACK numbers averages 1735539681293-2
+
+XREADGROUP GROUP averages C COUNT 1 STREAMS numbers >
+XACK numbers averages 1735539681293-3
+
+XGROUP SETID numbers primes 0 
+
+XGROUP DESTROY numbers sums 
+
+XGROUP DELCONSUMER numbers averages C 
+
+
+Week 4
+
+XRANGE numbers - + 
+1) 1) "1735539681293-0"
+   2) 1) "n"
+      2) "0"
+2) 1) "1735539681293-1"
+   2) 1) "n"
+      2) "1"
+3) 1) "1735539681293-2"
+   2) 1) "n"
+      2) "2"
+4) 1) "1735539681293-3"
+   2) 1) "n"
+      2) "3"
+
+XGROUP CREATE numbers evens 0
+
+XREADGROUP GROUP evens A COUNT 1 STREAMS numbers >
+1) 1) "numbers"
+   2) 1) 1) "1735539681293-0"
+         2) 1) "n"
+            2) "0"
+XREADGROUP GROUP evens B COUNT 1 STREAMS numbers >
+1) 1) "numbers"
+   2) 1) 1) "1735539681293-1"
+         2) 1) "n"
+            2) "1"
+XACK numbers evens 1735539681293-1
+
+XINFO GROUP numbers 
+3) 1) "name"
+   2) "evens"
+   3) "consumers"
+   4) "2"
+   5) "pending"
+   6) "1"
+   7) "last-delivered-id"
+   8) "1735539681293-1"
+   9) "entries-read"
+   10) "2"
+   11) "lag"
+   12) "2"
+
+XINFO CONSUMERS numbers evens 
+1) 1) "name"
+   2) "A"
+   3) "pending"
+   4) "1"
+   5) "idle"
+   6) "196156"
+   7) "inactive"
+   8) "196156"
+2) 1) "name"
+   2) "B"
+   3) "pending"
+   4) "0"
+   5) "idle"
+   6) "175132"
+   7) "inactive"
+   8) "175132"
+
+XPENDING numbers evens 
+1) "1"
+2) "1735539681293-0"
+3) "1735539681293-0"
+4) 1) 1) "A"
+      2) "1"
+
+XPENDING numbers evens - + 1 
+1) 1) "1735539681293-0"
+   2) "A"
+   3) "759225"
+   4) "1"
+
+XREADGROUP GROUP evens A COUNT 1 STREAMS numbers 0
+1) 1) "numbers"
+   2) 1) 1) "1735539681293-0"
+         2) 1) "n"
+            2) "0"
+
+XPENDING numbers evens - + 1 
+1) 1) "1735539681293-0"
+   2) "A"
+   3) "43423"
+   4) "2"            
+
+XCLAIM numbers evens B 1000 1735539681293-0
+1) 1) "1735539681293-0"
+   2) 1) "n"
+      2) "0"
+
+XPENDING numbers evens
+1) "1"
+2) "1735539681293-0"
+3) "1735539681293-0"
+4) 1) 1) "B"
+      2) "1"
+
+XPENDING numbers evens - + 1 
+1) 1) "1735539681293-0"
+   2) "B"
+   3) "102408"
+   4) "3"      
+
+
+
+XADD numbers 1-0 n 0 
+XADD numbers 2-0 n 1
+XADD numbers 3-0 n 2
+XADD numbers 4-0 n 3
+
+XREAD BLOCK 15000 STREAMS numbers $
+XADD numbers 5-0 n 4
+XADD numbers 6-0 n 5
+
+XDEL numbers 1-0 2-0
+
+XGROUP CREATE numbers primes 0
+XREADGROUP GROUP primes consumer1 COUNT 2 STREAMS numbers > 
+XREADGROUP GROUP primes consumer2 COUNT 3 STREAMS numbers >
+
