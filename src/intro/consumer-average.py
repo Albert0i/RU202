@@ -29,7 +29,7 @@ def get_rolling_average(results, window):
 
 def main():
     HOST = os.environ.get("REDIS_HOST", "localhost")
-    PORT = os.environ.get("REDIS_PORT", 6379)
+    PORT = os.environ.get("REDIS_PORT", 7000)
     USERNAME = os.environ.get("REDIS_USER")
     PASSWORD = os.environ.get("REDIS_PASSWORD")
 
