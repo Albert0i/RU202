@@ -28,14 +28,9 @@ def main():
     USERNAME = os.environ.get("REDIS_USER")
     PASSWORD = os.environ.get("REDIS_PASSWORD")
 
-    # client_kwargs = {
-    #     "host": HOST,
-    #     "port": PORT,
-    #     "decode_responses": True
-    # }
     client_kwargs = {
-        "host": "localhost",
-        "port": 7000,
+        "host": HOST,
+        "port": PORT,
         "decode_responses": True
     }
 
